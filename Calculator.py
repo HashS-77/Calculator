@@ -370,10 +370,7 @@ class Calculator:
 
     def show_history(self):
         """Display history in a separate window"""
-        if (
-            not hasattr(self, "history_window")
-            or not self.history_window.winfo_exists()
-        ):
+        if self.history_window is None or not self.history_window.winfo_exists():
             self.history_window = tk.Toplevel(self.root)
             self.history_window.title("Calculation History")
             self.history_window.geometry("400x500")
