@@ -1,157 +1,116 @@
 import tkinter as tk
+from tkinter import ttk
 
 
 class Calculator:
     def __init__(self):
         self.root = tk.Tk()
+        self.root.title("Calculator")
+        self.root.geometry("400x300")
 
-        self.entry = tk.Entry(self.root, width=30, borderwidth=5, font=("Arial", 20))
+        # Apply a modern theme
+        style = ttk.Style()
+        style.theme_use("clam")
+
+        self.entry = ttk.Entry(self.root, width=30, font=("Arial", 20))
         self.entry.bind("<Return>", lambda event: self.calculate())
         self.entry.pack(padx=10, pady=10)
 
-        button_frame = tk.Frame(self.root)
-        btn1 = tk.Button(
+        button_frame = ttk.Frame(self.root)
+        btn1 = ttk.Button(
             button_frame,
             text="1",
             width=5,
-            height=2,
-            borderwidth=1,
-            font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "1"),
         )
-        btn2 = tk.Button(
+        btn2 = ttk.Button(
             button_frame,
             text="2",
             width=5,
-            height=2,
-            borderwidth=1,
-            font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "2"),
         )
-        btn3 = tk.Button(
+        btn3 = ttk.Button(
             button_frame,
             text="3",
             width=5,
-            height=2,
-            borderwidth=1,
-            font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "3"),
         )
-        btn4 = tk.Button(
+        btn4 = ttk.Button(
             button_frame,
             text="4",
             width=5,
-            height=2,
-            borderwidth=1,
-            font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "4"),
         )
-        btn5 = tk.Button(
+        btn5 = ttk.Button(
             button_frame,
             text="5",
             width=5,
-            height=2,
-            borderwidth=1,
-            font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "5"),
         )
-        btn6 = tk.Button(
+        btn6 = ttk.Button(
             button_frame,
             text="6",
             width=5,
-            height=2,
-            borderwidth=1,
-            font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "6"),
         )
-        btn7 = tk.Button(
+        btn7 = ttk.Button(
             button_frame,
             text="7",
             width=5,
-            height=2,
-            borderwidth=1,
-            font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "7"),
         )
-        btn8 = tk.Button(
+        btn8 = ttk.Button(
             button_frame,
             text="8",
             width=5,
-            height=2,
-            borderwidth=1,
-            font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "8"),
         )
-        btn9 = tk.Button(
+        btn9 = ttk.Button(
             button_frame,
             text="9",
             width=5,
-            height=2,
-            borderwidth=1,
-            font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "9"),
         )
-        btn0 = tk.Button(
+        btn0 = ttk.Button(
             button_frame,
             text="0",
             width=5,
-            height=2,
-            borderwidth=1,
-            font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "0"),
         )
-        btn_add = tk.Button(
+        btn_add = ttk.Button(
             button_frame,
             text="+",
             width=5,
-            height=2,
-            borderwidth=1,
-            font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "+"),
         )
-        btn_sub = tk.Button(
+        btn_sub = ttk.Button(
             button_frame,
             text="-",
             width=5,
-            height=2,
-            borderwidth=1,
-            font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "-"),
         )
-        btn_mul = tk.Button(
+        btn_mul = ttk.Button(
             button_frame,
             text="*",
             width=5,
-            height=2,
-            borderwidth=1,
-            font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "*"),
         )
-        btn_div = tk.Button(
+        btn_div = ttk.Button(
             button_frame,
             text="/",
             width=5,
-            height=2,
-            borderwidth=1,
-            font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "/"),
         )
-        btn_equal = tk.Button(
+        btn_equal = ttk.Button(
             button_frame,
             text="=",
             width=5,
-            height=2,
-            borderwidth=1,
-            font=("Arial", 20),
             command=self.calculate,
         )
-        btn_clear = tk.Button(
+        btn_clear = ttk.Button(
             button_frame,
             text="C",
             width=5,
-            height=2,
-            borderwidth=1,
-            font=("Arial", 20),
             command=lambda: self.entry.delete(0, tk.END),
         )
         btn1.grid(row=0, column=0)
