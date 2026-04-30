@@ -6,130 +6,260 @@ class Calculator:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Calculator")
-        self.root.geometry("400x300")
+        self.root.geometry("500x600")
+        self.root.config(bg="#1e1e1e")
+        self.root.resizable(False, False)
 
-        # Apply a modern theme
-        style = ttk.Style()
-        style.theme_use("clam")
-
-        self.entry = ttk.Entry(self.root, width=30, font=("Arial", 20))
+        # Display entry
+        self.entry = tk.Entry(
+            self.root,
+            font=("Segoe UI", 32, "bold"),
+            bg="#2d2d2d",
+            fg="#ffffff",
+            borderwidth=0,
+            justify="right",
+            insertbackground="#ffffff",
+        )
         self.entry.bind("<Return>", lambda event: self.calculate())
-        self.entry.pack(padx=10, pady=10)
+        self.entry.pack(padx=15, pady=20, fill="both", ipady=15)
 
-        button_frame = ttk.Frame(self.root)
-        btn1 = ttk.Button(
-            button_frame,
-            text="1",
-            width=5,
-            command=lambda: self.entry.insert(tk.END, "1"),
-        )
-        btn2 = ttk.Button(
-            button_frame,
-            text="2",
-            width=5,
-            command=lambda: self.entry.insert(tk.END, "2"),
-        )
-        btn3 = ttk.Button(
-            button_frame,
-            text="3",
-            width=5,
-            command=lambda: self.entry.insert(tk.END, "3"),
-        )
-        btn4 = ttk.Button(
-            button_frame,
-            text="4",
-            width=5,
-            command=lambda: self.entry.insert(tk.END, "4"),
-        )
-        btn5 = ttk.Button(
-            button_frame,
-            text="5",
-            width=5,
-            command=lambda: self.entry.insert(tk.END, "5"),
-        )
-        btn6 = ttk.Button(
-            button_frame,
-            text="6",
-            width=5,
-            command=lambda: self.entry.insert(tk.END, "6"),
-        )
-        btn7 = ttk.Button(
-            button_frame,
-            text="7",
-            width=5,
-            command=lambda: self.entry.insert(tk.END, "7"),
-        )
-        btn8 = ttk.Button(
-            button_frame,
-            text="8",
-            width=5,
-            command=lambda: self.entry.insert(tk.END, "8"),
-        )
-        btn9 = ttk.Button(
-            button_frame,
-            text="9",
-            width=5,
-            command=lambda: self.entry.insert(tk.END, "9"),
-        )
-        btn0 = ttk.Button(
-            button_frame,
-            text="0",
-            width=5,
-            command=lambda: self.entry.insert(tk.END, "0"),
-        )
-        btn_add = ttk.Button(
-            button_frame,
-            text="+",
-            width=5,
-            command=lambda: self.entry.insert(tk.END, "+"),
-        )
-        btn_sub = ttk.Button(
-            button_frame,
-            text="-",
-            width=5,
-            command=lambda: self.entry.insert(tk.END, "-"),
-        )
-        btn_mul = ttk.Button(
-            button_frame,
-            text="*",
-            width=5,
-            command=lambda: self.entry.insert(tk.END, "*"),
-        )
-        btn_div = ttk.Button(
-            button_frame,
-            text="/",
-            width=5,
-            command=lambda: self.entry.insert(tk.END, "/"),
-        )
-        btn_equal = ttk.Button(
-            button_frame,
-            text="=",
-            width=5,
-            command=self.calculate,
-        )
-        btn_clear = ttk.Button(
-            button_frame,
-            text="C",
-            width=5,
-            command=lambda: self.entry.delete(0, tk.END),
-        )
-        btn1.grid(row=0, column=0)
-        btn2.grid(row=0, column=1)
-        btn3.grid(row=0, column=2)
-        btn4.grid(row=1, column=0)
-        btn5.grid(row=1, column=1)
-        btn6.grid(row=1, column=2)
-        btn7.grid(row=2, column=0)
-        btn8.grid(row=2, column=1)
-        btn9.grid(row=2, column=2)
-        btn0.grid(row=3, column=1)
-        btn_add.grid(row=0, column=3)
-        btn_sub.grid(row=1, column=3)
-        btn_mul.grid(row=2, column=3)
-        btn_div.grid(row=3, column=3)
-        btn_equal.grid(row=3, column=2)
-        btn_clear.grid(row=3, column=0)
-        button_frame.pack(padx=10, pady=10, fill="both", expand=True)
+        # Button frame
+        button_frame = tk.Frame(self.root, bg="#1e1e1e")
+        button_frame.pack(padx=15, pady=10, fill="both", expand=True)
+
+        # Button styling
+        num_btn_style = {
+            "font": ("Segoe UI", 18, "bold"),
+            "bg": "#404040",
+            "fg": "#ffffff",
+            "activebackground": "#505050",
+            "activeforeground": "#ffffff",
+            "borderwidth": 0,
+            "height": 3,
+            "width": 7,
+        }
+        op_btn_style = {
+            "font": ("Segoe UI", 18, "bold"),
+            "bg": "#ff9500",
+            "fg": "#ffffff",
+            "activebackground": "#ffb143",
+            "activeforeground": "#ffffff",
+            "borderwidth": 0,
+            "height": 3,
+            "width": 7,
+        }
+        eq_btn_style = {
+            "font": ("Segoe UI", 18, "bold"),
+            "bg": "#34c759",
+            "fg": "#ffffff",
+            "activebackground": "#5dd981",
+            "activeforeground": "#ffffff",
+            "borderwidth": 0,
+            "height": 3,
+            "width": 7,
+        }
+        clr_btn_style = {
+            "font": ("Segoe UI", 18, "bold"),
+            "bg": "#ff3b30",
+            "fg": "#ffffff",
+            "activebackground": "#ff5c52",
+            "activeforeground": "#ffffff",
+            "borderwidth": 0,
+            "height": 3,
+            "width": 7,
+        }
+
+        # Create buttons with grid
+        buttons = [
+            (
+                tk.Button(
+                    button_frame,
+                    text="7",
+                    command=lambda: self.entry.insert(tk.END, "7"),
+                    **num_btn_style,
+                ),
+                0,
+                0,
+            ),
+            (
+                tk.Button(
+                    button_frame,
+                    text="8",
+                    command=lambda: self.entry.insert(tk.END, "8"),
+                    **num_btn_style,
+                ),
+                0,
+                1,
+            ),
+            (
+                tk.Button(
+                    button_frame,
+                    text="9",
+                    command=lambda: self.entry.insert(tk.END, "9"),
+                    **num_btn_style,
+                ),
+                0,
+                2,
+            ),
+            (
+                tk.Button(
+                    button_frame,
+                    text="/",
+                    command=lambda: self.entry.insert(tk.END, "/"),
+                    **op_btn_style,
+                ),
+                0,
+                3,
+            ),
+            (
+                tk.Button(
+                    button_frame,
+                    text="4",
+                    command=lambda: self.entry.insert(tk.END, "4"),
+                    **num_btn_style,
+                ),
+                1,
+                0,
+            ),
+            (
+                tk.Button(
+                    button_frame,
+                    text="5",
+                    command=lambda: self.entry.insert(tk.END, "5"),
+                    **num_btn_style,
+                ),
+                1,
+                1,
+            ),
+            (
+                tk.Button(
+                    button_frame,
+                    text="6",
+                    command=lambda: self.entry.insert(tk.END, "6"),
+                    **num_btn_style,
+                ),
+                1,
+                2,
+            ),
+            (
+                tk.Button(
+                    button_frame,
+                    text="*",
+                    command=lambda: self.entry.insert(tk.END, "*"),
+                    **op_btn_style,
+                ),
+                1,
+                3,
+            ),
+            (
+                tk.Button(
+                    button_frame,
+                    text="1",
+                    command=lambda: self.entry.insert(tk.END, "1"),
+                    **num_btn_style,
+                ),
+                2,
+                0,
+            ),
+            (
+                tk.Button(
+                    button_frame,
+                    text="2",
+                    command=lambda: self.entry.insert(tk.END, "2"),
+                    **num_btn_style,
+                ),
+                2,
+                1,
+            ),
+            (
+                tk.Button(
+                    button_frame,
+                    text="3",
+                    command=lambda: self.entry.insert(tk.END, "3"),
+                    **num_btn_style,
+                ),
+                2,
+                2,
+            ),
+            (
+                tk.Button(
+                    button_frame,
+                    text="-",
+                    command=lambda: self.entry.insert(tk.END, "-"),
+                    **op_btn_style,
+                ),
+                2,
+                3,
+            ),
+            (
+                tk.Button(
+                    button_frame,
+                    text="0",
+                    command=lambda: self.entry.insert(tk.END, "0"),
+                    **num_btn_style,
+                ),
+                3,
+                0,
+            ),
+            (
+                tk.Button(
+                    button_frame,
+                    text=".",
+                    command=lambda: self.entry.insert(tk.END, "."),
+                    **num_btn_style,
+                ),
+                3,
+                1,
+            ),
+            (
+                tk.Button(
+                    button_frame,
+                    text="+",
+                    command=lambda: self.entry.insert(tk.END, "+"),
+                    **op_btn_style,
+                ),
+                3,
+                2,
+            ),
+            (
+                tk.Button(
+                    button_frame, text="=", command=self.calculate, **eq_btn_style
+                ),
+                3,
+                3,
+            ),
+            (
+                tk.Button(
+                    button_frame,
+                    text="C",
+                    command=lambda: self.entry.delete(0, tk.END),
+                    **clr_btn_style,
+                ),
+                4,
+                0,
+            ),
+            (
+                tk.Button(
+                    button_frame,
+                    text="⌫",
+                    command=lambda: self.entry.delete(
+                        len(self.entry.get()) - 1, tk.END
+                    ),
+                    **clr_btn_style,
+                ),
+                4,
+                1,
+            ),
+        ]
+
+        for btn, row, col in buttons:
+            btn.grid(row=row, column=col, padx=5, pady=5, sticky="nsew")
+
+        # Configure grid weights for responsiveness
+        for i in range(5):
+            button_frame.grid_rowconfigure(i, weight=1)
+        for i in range(4):
+            button_frame.grid_columnconfigure(i, weight=1)
 
         self.root.mainloop()
 
