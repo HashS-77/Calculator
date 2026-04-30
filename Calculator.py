@@ -9,7 +9,7 @@ class Calculator:
         self.root.config(bg="#1e1e1e")
         self.root.resizable(True, True)
         self.root.minsize(400, 500)
-        
+
         # History storage
         self.history = []
         self.history_window = None
@@ -348,14 +348,14 @@ class Calculator:
 
             # Store original expression for history
             original_expr = expression
-            
+
             # Replace ^ with ** for exponentiation
             expression = expression.replace("^", "**")
             result = eval(expression)
-            
+
             # Add to history
             self.history.append(f"{original_expr} = {result}")
-            
+
             self.entry.delete(0, tk.END)
             self.entry.insert(tk.END, str(result))
         except ZeroDivisionError:
@@ -370,7 +370,10 @@ class Calculator:
 
     def show_history(self):
         """Display history in a separate window"""
-        if not hasattr(self, 'history_window') or not self.history_window.winfo_exists():
+        if (
+            not hasattr(self, "history_window")
+            or not self.history_window.winfo_exists()
+        ):
             self.history_window = tk.Toplevel(self.root)
             self.history_window.title("Calculation History")
             self.history_window.geometry("400x500")
