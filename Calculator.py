@@ -5,7 +5,7 @@ class Calculator:
     def __init__(self):
         self.root = tk.Tk()
 
-        self.entry = tk.Entry(self.root, width=30, font=("Arial", 20))
+        self.entry = tk.Entry(self.root, width=30, borderwidth=5, font=("Arial", 20))
         self.entry.bind("<Return>", lambda event: self.calculate())
         self.entry.pack(padx=10, pady=10)
 
@@ -15,6 +15,7 @@ class Calculator:
             text="1",
             width=5,
             height=2,
+            borderwidth=1,
             font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "1"),
         )
@@ -23,6 +24,7 @@ class Calculator:
             text="2",
             width=5,
             height=2,
+            borderwidth=1,
             font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "2"),
         )
@@ -31,6 +33,7 @@ class Calculator:
             text="3",
             width=5,
             height=2,
+            borderwidth=1,
             font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "3"),
         )
@@ -39,6 +42,7 @@ class Calculator:
             text="4",
             width=5,
             height=2,
+            borderwidth=1,
             font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "4"),
         )
@@ -47,6 +51,7 @@ class Calculator:
             text="5",
             width=5,
             height=2,
+            borderwidth=1,
             font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "5"),
         )
@@ -55,6 +60,7 @@ class Calculator:
             text="6",
             width=5,
             height=2,
+            borderwidth=1,
             font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "6"),
         )
@@ -63,6 +69,7 @@ class Calculator:
             text="7",
             width=5,
             height=2,
+            borderwidth=1,
             font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "7"),
         )
@@ -71,6 +78,7 @@ class Calculator:
             text="8",
             width=5,
             height=2,
+            borderwidth=1,
             font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "8"),
         )
@@ -79,6 +87,7 @@ class Calculator:
             text="9",
             width=5,
             height=2,
+            borderwidth=1,
             font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "9"),
         )
@@ -87,6 +96,7 @@ class Calculator:
             text="0",
             width=5,
             height=2,
+            borderwidth=1,
             font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "0"),
         )
@@ -95,6 +105,7 @@ class Calculator:
             text="+",
             width=5,
             height=2,
+            borderwidth=1,
             font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "+"),
         )
@@ -103,6 +114,7 @@ class Calculator:
             text="-",
             width=5,
             height=2,
+            borderwidth=1,
             font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "-"),
         )
@@ -111,6 +123,7 @@ class Calculator:
             text="*",
             width=5,
             height=2,
+            borderwidth=1,
             font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "*"),
         )
@@ -119,6 +132,7 @@ class Calculator:
             text="/",
             width=5,
             height=2,
+            borderwidth=1,
             font=("Arial", 20),
             command=lambda: self.entry.insert(tk.END, "/"),
         )
@@ -127,6 +141,7 @@ class Calculator:
             text="=",
             width=5,
             height=2,
+            borderwidth=1,
             font=("Arial", 20),
             command=self.calculate,
         )
@@ -135,6 +150,7 @@ class Calculator:
             text="C",
             width=5,
             height=2,
+            borderwidth=1,
             font=("Arial", 20),
             command=lambda: self.entry.delete(0, tk.END),
         )
