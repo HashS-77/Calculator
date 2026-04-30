@@ -6,9 +6,13 @@ class Calculator:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Calculator")
-        self.root.geometry("500x700")
         self.root.config(bg="#1e1e1e")
-        self.root.resizable(False, False)
+        self.root.resizable(True, True)
+        self.root.minsize(400, 500)
+        
+        # History storage
+        self.history = []
+        self.history_window = None
 
         # Display entry
         self.entry = tk.Entry(
@@ -23,62 +27,60 @@ class Calculator:
         self.entry.bind("<Return>", lambda event: self.calculate())
         self.entry.bind("<BackSpace>", lambda event: self.backspace())
         self.entry.bind("<Escape>", lambda event: self.clear())
-        self.entry.pack(padx=15, pady=20, fill="both", ipady=15)
+        self.entry.pack(padx=15, pady=15, fill="x", ipady=12)
 
         # Button frame
         button_frame = tk.Frame(self.root, bg="#1e1e1e")
-        button_frame.pack(padx=15, pady=10, fill="both", expand=True)
+        button_frame.pack(padx=15, pady=15, fill="both", expand=True)
 
         # Button styling
         num_btn_style = {
-            "font": ("Segoe UI", 18, "bold"),
+            "font": ("Segoe UI", 16, "bold"),
             "bg": "#404040",
             "fg": "#ffffff",
             "activebackground": "#505050",
             "activeforeground": "#ffffff",
             "borderwidth": 0,
-            "height": 3,
-            "width": 7,
         }
         op_btn_style = {
-            "font": ("Segoe UI", 18, "bold"),
+            "font": ("Segoe UI", 16, "bold"),
             "bg": "#ff9500",
             "fg": "#ffffff",
             "activebackground": "#ffb143",
             "activeforeground": "#ffffff",
             "borderwidth": 0,
-            "height": 3,
-            "width": 7,
         }
         eq_btn_style = {
-            "font": ("Segoe UI", 18, "bold"),
+            "font": ("Segoe UI", 16, "bold"),
             "bg": "#34c759",
             "fg": "#ffffff",
             "activebackground": "#5dd981",
             "activeforeground": "#ffffff",
             "borderwidth": 0,
-            "height": 3,
-            "width": 7,
         }
         clr_btn_style = {
-            "font": ("Segoe UI", 18, "bold"),
+            "font": ("Segoe UI", 16, "bold"),
             "bg": "#ff3b30",
             "fg": "#ffffff",
             "activebackground": "#ff5c52",
             "activeforeground": "#ffffff",
             "borderwidth": 0,
-            "height": 3,
-            "width": 7,
         }
         paren_btn_style = {
-            "font": ("Segoe UI", 18, "bold"),
+            "font": ("Segoe UI", 16, "bold"),
             "bg": "#5b5bff",
             "fg": "#ffffff",
             "activebackground": "#7b7bff",
             "activeforeground": "#ffffff",
             "borderwidth": 0,
-            "height": 3,
-            "width": 7,
+        }
+        hist_btn_style = {
+            "font": ("Segoe UI", 16, "bold"),
+            "bg": "#9c27b0",
+            "fg": "#ffffff",
+            "activebackground": "#ab47bc",
+            "activeforeground": "#ffffff",
+            "borderwidth": 0,
         }
 
         # Create buttons with grid
@@ -290,10 +292,20 @@ class Calculator:
                 5,
                 0,
             ),
+            (
+                tk.Button(
+                    button_frame,
+                    text="📜 History",
+                    command=self.show_history,
+                    **hist_btn_style,
+                ),
+                5,
+                1,
+            ),
         ]
 
         for btn, row, col in buttons:
-            btn.grid(row=row, column=col, padx=5, pady=5, sticky="nsew")
+            btn.grid(row=row, column=col, padx=3, pady=3, sticky="nsew")
 
         # Configure grid weights for responsiveness
         for i in range(6):
@@ -334,9 +346,16 @@ class Calculator:
             if not expression:
                 return
 
+            # Store original expression for history
+            original_expr = expression
+            
             # Replace ^ with ** for exponentiation
             expression = expression.replace("^", "**")
             result = eval(expression)
+            
+            # Add to history
+            self.history.append(f"{original_expr} = {result}")
+            
             self.entry.delete(0, tk.END)
             self.entry.insert(tk.END, str(result))
         except ZeroDivisionError:
@@ -348,6 +367,96 @@ class Calculator:
         except Exception as e:
             self.entry.delete(0, tk.END)
             self.entry.insert(tk.END, "Error")
+
+    def show_history(self):
+        """Display history in a separate window"""
+        if not hasattr(self, 'history_window') or not self.history_window.winfo_exists():
+            self.history_window = tk.Toplevel(self.root)
+            self.history_window.title("Calculation History")
+            self.history_window.geometry("400x500")
+            self.history_window.config(bg="#1e1e1e")
+
+            # Title
+            title = tk.Label(
+                self.history_window,
+                text="History",
+                font=("Segoe UI", 18, "bold"),
+                bg="#1e1e1e",
+                fg="#ffffff",
+            )
+            title.pack(pady=10)
+
+            # History listbox with scrollbar
+            frame = tk.Frame(self.history_window, bg="#1e1e1e")
+            frame.pack(fill="both", expand=True, padx=10, pady=10)
+
+            scrollbar = tk.Scrollbar(frame)
+            scrollbar.pack(side="right", fill="y")
+
+            self.history_listbox = tk.Listbox(
+                frame,
+                font=("Segoe UI", 12),
+                bg="#2d2d2d",
+                fg="#ffffff",
+                yscrollcommand=scrollbar.set,
+                selectmode="single",
+            )
+            self.history_listbox.pack(side="left", fill="both", expand=True)
+            scrollbar.config(command=self.history_listbox.yview)
+
+            # Bind double-click to load expression
+            self.history_listbox.bind("<Double-Button-1>", self.on_history_select)
+
+            # Populate listbox with history in reverse order (newest first)
+            for item in reversed(self.history):
+                self.history_listbox.insert(0, item)
+
+            # Button frame
+            btn_frame = tk.Frame(self.history_window, bg="#1e1e1e")
+            btn_frame.pack(fill="x", padx=10, pady=10)
+
+            # Clear history button
+            clear_btn = tk.Button(
+                btn_frame,
+                text="Clear All",
+                font=("Segoe UI", 12, "bold"),
+                bg="#ff3b30",
+                fg="#ffffff",
+                command=self.clear_history,
+                relief="flat",
+            )
+            clear_btn.pack(side="left", padx=5)
+
+            # Close button
+            close_btn = tk.Button(
+                btn_frame,
+                text="Close",
+                font=("Segoe UI", 12, "bold"),
+                bg="#404040",
+                fg="#ffffff",
+                command=self.history_window.destroy,
+                relief="flat",
+            )
+            close_btn.pack(side="right", padx=5)
+        else:
+            # Window exists, bring it to front
+            self.history_window.lift()
+
+    def on_history_select(self, event):
+        """Load expression from history when double-clicked"""
+        selection = self.history_listbox.curselection()
+        if selection:
+            item = self.history_listbox.get(selection[0])
+            # Extract just the expression (before the "=")
+            expression = item.split(" = ")[0]
+            self.entry.delete(0, tk.END)
+            self.entry.insert(0, expression)
+            self.history_window.destroy()
+
+    def clear_history(self):
+        """Clear all history"""
+        self.history = []
+        self.history_listbox.delete(0, tk.END)
 
 
 Calculator()
